@@ -1,9 +1,12 @@
 import React from "react";
 import { FastField, Form, Formik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import * as Yup from "yup";
 import InputField from "../utils/InputField";
+import { isUserLogin, login } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const initialValues = {
   email: "",
@@ -16,11 +19,27 @@ const validationSchema = Yup.object().shape({
 });
 
 function SignIn() {
-  const handleSubmitForm = (values, resetForm) => {
-    console.log(values);
+  const auth = useSelector((state) => state.auth);
 
-    resetForm();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!auth.authenticate) {
+      dispatch(isUserLogin());
+    }
+  }, [dispatch, auth]);
+
+  const handleSubmitForm = (values, resetForm) => {
+    dispatch(login(values));
+
+    // resetForm();
   };
+
+  console.log(auth);
+
+  if (auth.authenticate) {
+    return <Redirect to="/" />;
+  }
   return (
     <Container className="mt-5">
       <Row>
