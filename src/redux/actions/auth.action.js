@@ -1,5 +1,5 @@
-import axiosInstance from "../../api/axios";
 import qs from "qs";
+import axiosInstance from "../../api/axios";
 import { authConst } from "../const";
 
 export const login = (user) => {
@@ -59,5 +59,15 @@ export const isUserLogin = () => {
         },
       });
     }
+  };
+};
+
+export const signOut = () => {
+  return async (dispatch) => {
+    localStorage.clear();
+
+    dispatch({
+      type: authConst.LOGOUT_REQUEST,
+    });
   };
 };

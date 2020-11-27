@@ -1,10 +1,17 @@
 import React from "react";
-import { Container } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 
 function Dashboard() {
   return (
-    <Container>
-      <h1>Dashboard</h1>
+    <Container fluid>
+      <Row>
+        <Col sm={2} className="sidebar">
+          Side bar
+        </Col>
+        <Col sm={10} style={{ marginLeft: "auto" }}>
+          Container
+        </Col>
+      </Row>
     </Container>
   );
 }

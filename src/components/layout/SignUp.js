@@ -1,8 +1,18 @@
 import { FastField, Form, Formik } from "formik";
 import React from "react";
-import { Link } from "react-router-dom";
-import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Spinner,
+} from "reactstrap";
 import * as Yup from "yup";
+import { signup } from "../../redux/actions";
 import InputField from "../utils/InputField";
 
 const initialValues = {
@@ -23,10 +33,22 @@ const validationSchema = Yup.object().shape({
 });
 
 function SignUp() {
+  const { loading } = useSelector((state) => state.user);
+
+  const auth = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
   const handleSubmitForm = (values, resetForm) => {
     console.log(values);
-    resetForm();
+    dispatch(signup(values));
+    // resetForm();
   };
+
+  if (auth.authenticate) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <Container className="mt-5">
       <Row>
@@ -88,7 +110,11 @@ function SignUp() {
                         type="submit"
                         color="primary"
                         className="text-capitalize"
+                        disabled={loading && true}
                       >
+                        {loading && (
+                          <Spinner as="span" animation="border" size="sm" />
+                        )}
                         Sign up
                       </Button>
                       <h5 className="mt-3">

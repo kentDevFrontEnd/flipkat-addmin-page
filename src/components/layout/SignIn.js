@@ -1,12 +1,11 @@
-import React from "react";
 import { FastField, Form, Formik } from "formik";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import * as Yup from "yup";
+import { login } from "../../redux/actions";
 import InputField from "../utils/InputField";
-import { isUserLogin, login } from "../../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 
 const initialValues = {
   email: "",
@@ -23,12 +22,6 @@ function SignIn() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!auth.authenticate) {
-      dispatch(isUserLogin());
-    }
-  }, [dispatch, auth]);
-
   const handleSubmitForm = (values, resetForm) => {
     dispatch(login(values));
 
@@ -40,6 +33,7 @@ function SignIn() {
   if (auth.authenticate) {
     return <Redirect to="/" />;
   }
+
   return (
     <Container className="mt-5">
       <Row>
