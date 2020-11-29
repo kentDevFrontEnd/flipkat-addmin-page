@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { Button, Collapse, Container, NavItem } from "reactstrap";
-import { signOut } from "../redux/actions";
+import { signOut } from "../../redux/actions";
 
 function NavBar(props) {
   const auth = useSelector((state) => state.auth);

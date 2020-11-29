@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header";
+import Home from "./components/container/home/Home";
+import Order from "./components/container/orders/Order";
+import Products from "./components/container/Products/Products";
 import PrivateRoute from "./components/HOC/PrivateRoute";
-import Dashboard from "./components/layout/Dashboard";
 import Default from "./components/layout/Default";
 import SignIn from "./components/layout/SignIn";
 import SignUp from "./components/layout/SignUp";
@@ -21,9 +22,11 @@ function App() {
   }, [dispatch, auth]);
   return (
     <React.Fragment>
-      <Header />
       <Switch>
-        <PrivateRoute exact path="/" component={Dashboard} />
+        <PrivateRoute exact path="/" component={Home} />
+        <PrivateRoute exact path="/products" component={Products} />
+        <PrivateRoute exact path="/orders" component={Order} />
+
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
         <Route component={Default} />

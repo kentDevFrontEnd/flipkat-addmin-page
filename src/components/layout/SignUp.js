@@ -42,7 +42,7 @@ function SignUp() {
   const handleSubmitForm = (values, resetForm) => {
     console.log(values);
     dispatch(signup(values));
-    // resetForm();
+    resetForm();
   };
 
   if (auth.authenticate) {

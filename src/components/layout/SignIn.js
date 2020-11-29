@@ -31,7 +31,8 @@ function SignIn() {
   console.log(auth);
 
   if (auth.authenticate) {
-    return <Redirect to="/" />;
+    // return <Redirect to="/" />;
+    window.location.href = "/"; // fix login and refresh page
   }
 
   return (
