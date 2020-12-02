@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
+import Category from "./components/container/category/Category";
 import Home from "./components/container/home/Home";
 import Order from "./components/container/orders/Order";
 import Products from "./components/container/Products/Products";
@@ -25,6 +26,7 @@ function App() {
       <Switch>
         <PrivateRoute exact path="/" component={Home} />
         <PrivateRoute exact path="/products" component={Products} />
+        <PrivateRoute exact path="/category" component={Category} />
         <PrivateRoute exact path="/orders" component={Order} />
 
         <Route exact path="/signin" component={SignIn} />

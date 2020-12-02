@@ -1,7 +1,7 @@
 import { FastField, Form, Formik } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import * as Yup from "yup";
 import { login } from "../../redux/actions";
