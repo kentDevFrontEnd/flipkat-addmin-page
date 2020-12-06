@@ -1,4 +1,5 @@
 import React from "react";
+import { ListGroup } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 import Header from "./Header";
@@ -11,20 +12,20 @@ function SideBar(props) {
         {props.sidebar ? (
           <Row>
             <Col sm={2} className="sidebar">
-              <ul>
-                <li>
+              <ListGroup as="ul">
+                <ListGroup.Item>
                   <NavLink to="/">Home</NavLink>
-                </li>
-                <li>
+                </ListGroup.Item>
+                <ListGroup.Item>
                   <NavLink to="/category">Category</NavLink>
-                </li>
-                <li>
+                </ListGroup.Item>
+                <ListGroup.Item>
                   <NavLink to="/products">Products</NavLink>
-                </li>
-                <li>
+                </ListGroup.Item>
+                <ListGroup.Item>
                   <NavLink to="/orders">Orders</NavLink>
-                </li>
-              </ul>
+                </ListGroup.Item>
+              </ListGroup>
             </Col>
             <Col sm={10} style={{ marginLeft: "auto" }}>
               {props.children}

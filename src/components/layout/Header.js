@@ -17,6 +17,7 @@ function NavBar(props) {
 
   const handleSignOut = () => {
     dispatch(signOut());
+    window.localStorage.clear();
   };
 
   const renderLogined = () => {

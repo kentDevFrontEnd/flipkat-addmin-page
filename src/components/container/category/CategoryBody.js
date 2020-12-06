@@ -31,7 +31,7 @@ function CategoryBody() {
       return (
         <li key={cate.name}>
           {cate.name}
-          {cate.children.length > 0 ? (
+          {cate.children && cate.children.length > 0 ? (
             <ul>{renderCate(cate.children)}</ul>
           ) : null}
           {/* {cate.children ? cate.children.length : null} */}
@@ -42,21 +42,15 @@ function CategoryBody() {
 
   const createCateList = (categories, options = []) => {
     if (!categories || categories.length === 0) return [];
-    // return categories.map((cate) => {
-    //   if (cate.children.length > 0) createCateList(cate.children);
-    //   return (
-    //     <option key={cate.name} value={cate._id}>
-    //       {cate.name}
-    //     </option>
-    //   );
-    // });
 
     categories.map((cate) => {
       options.push({
         value: cate._id,
         name: cate.name,
       });
-      if (cate.children.length > 0) createCateList(cate.children, options);
+      cate.children &&
+        cate.children.length &&
+        createCateList(cate.children, options);
       return options;
     });
     return options;
@@ -103,6 +97,8 @@ function CategoryBody() {
     setShow(false);
   };
 
+  console.log(categories);
+
   return (
     <>
       <Container fluid>
@@ -121,13 +117,13 @@ function CategoryBody() {
         </Row>
       </Container>
       <>
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} style={{ top: "50px" }}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Add Category</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Group controlId="exampleForm.ControlInput1">
+              <Form.Group>
                 <Form.Label>Category Name</Form.Label>
                 <input
                   className="form-control"
@@ -146,7 +142,7 @@ function CategoryBody() {
                 />
               </Form.Group>
 
-              <Form.Group controlId="exampleForm.ControlSelect1">
+              <Form.Group>
                 <Form.Label>Select Category</Form.Label>
                 <select
                   className="form-control"
