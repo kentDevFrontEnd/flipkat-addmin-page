@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../../redux/actions/product.action";
+import CustomModal from "../../UI/CustomModal";
 
 function ProductBody() {
   const [show, setShow] = useState(false);
@@ -44,6 +45,13 @@ function ProductBody() {
 
     dispatch(addProduct(form));
     setShow(false);
+
+    setProdName("");
+    setPrice("");
+    setQuantity("");
+    setDescription("");
+    setProdImage([]);
+    setCategoryId("");
   };
 
   const createCateList = (categories, options = []) => {
@@ -68,7 +76,7 @@ function ProductBody() {
     </option>
   ));
 
-  console.log(prodImage);
+  // console.log(prodImage);
 
   return (
     <>
@@ -84,85 +92,78 @@ function ProductBody() {
           </Col>
         </Row>
       </Container>
-      <Modal show={show} onHide={handleClose} style={{ top: "50px" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Product</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group>
-              <Form.Label>Product Name</Form.Label>
-              <input
-                className="form-control"
-                value={prodName}
-                onChange={(e) => setProdName(e.target.value)}
-                type="text"
-                placeholder="Name"
-              />
-            </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Price</Form.Label>
-              <input
-                className="form-control"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                type="text"
-                placeholder="000"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Quantity</Form.Label>
-              <input
-                className="form-control"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                type="number"
-                placeholder="100"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Description</Form.Label>
-              <input
-                className="form-control"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                type="text"
-                placeholder="description"
-              />
-            </Form.Group>
+      <CustomModal
+        show={show}
+        handleClose={handleClose}
+        handleSubmitForm={handleSubmitForm}
+        title="Add Product"
+      >
+        <Form>
+          <Form.Group>
+            <Form.Label>Product Name</Form.Label>
+            <input
+              className="form-control"
+              value={prodName}
+              onChange={(e) => setProdName(e.target.value)}
+              type="text"
+              placeholder="Name"
+            />
+          </Form.Group>
 
-            <div>{prodImage && prodImage.map((img) => <p>{img.name}</p>)}</div>
+          <Form.Group>
+            <Form.Label>Price</Form.Label>
+            <input
+              className="form-control"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              type="text"
+              placeholder="000"
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Quantity</Form.Label>
+            <input
+              className="form-control"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              type="number"
+              placeholder="100"
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Description</Form.Label>
+            <input
+              className="form-control"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              type="text"
+              placeholder="description"
+            />
+          </Form.Group>
 
-            <Form.Group>
-              <input
-                type="file"
-                name="categoryImage"
-                onChange={handleProductImages}
-              />
-            </Form.Group>
+          <div>{prodImage && prodImage.map((img) => <p>{img.name}</p>)}</div>
 
-            <Form.Group>
-              <Form.Label>Select Category</Form.Label>
-              <select
-                className="form-control"
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              >
-                {renderOptions}
-              </select>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" type="submit" onClick={handleSubmitForm}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          <Form.Group>
+            <input
+              type="file"
+              name="categoryImage"
+              onChange={handleProductImages}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Select Category</Form.Label>
+            <select
+              className="form-control"
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+            >
+              {renderOptions}
+            </select>
+          </Form.Group>
+        </Form>
+      </CustomModal>
     </>
   );
 }

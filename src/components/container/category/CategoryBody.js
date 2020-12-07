@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
-import {
-  addCategory,
-  getAllCategories,
-} from "../../../redux/actions/category.action";
+import { addCategory } from "../../../redux/actions/category.action";
+import CustomModal from "../../UI/CustomModal";
 
 function CategoryBody() {
   const [categoryName, setCategoryName] = useState("");
@@ -17,10 +14,6 @@ function CategoryBody() {
 
   const category = useSelector((state) => state.category);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getAllCategories());
-  }, [dispatch]);
 
   const { categories } = category;
   // render
@@ -79,13 +72,6 @@ function CategoryBody() {
   };
 
   const handleSubmitForm = () => {
-    // const values = {
-    //   categoryName,
-    //   parentCategoryId,
-    //   categoryImage,
-    // };
-    // console.log(values);
-
     const form = new FormData();
 
     form.append("name", categoryName);
@@ -95,6 +81,9 @@ function CategoryBody() {
     dispatch(addCategory(form));
 
     setShow(false);
+    setCategoryName("");
+    setParentCategoryId("");
+    setCategoryImage("");
   };
 
   console.log(categories);
@@ -116,54 +105,45 @@ function CategoryBody() {
           <ul>{categories.length && renderCate(categories)}</ul>
         </Row>
       </Container>
-      <>
-        <Modal show={show} onHide={handleClose} style={{ top: "50px" }}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add Category</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group>
-                <Form.Label>Category Name</Form.Label>
-                <input
-                  className="form-control"
-                  value={categoryName}
-                  onChange={(e) => setCategoryName(e.target.value)}
-                  type="text"
-                  placeholder="Category"
-                />
-              </Form.Group>
 
-              <Form.Group>
-                <input
-                  type="file"
-                  name="categoryImage"
-                  onChange={handleCategoryImage}
-                />
-              </Form.Group>
+      <CustomModal
+        show={show}
+        handleClose={handleClose}
+        handleSubmitForm={handleSubmitForm}
+        title="Add Category"
+      >
+        <Form>
+          <Form.Group>
+            <Form.Label>Category Name</Form.Label>
+            <input
+              className="form-control"
+              value={categoryName}
+              onChange={(e) => setCategoryName(e.target.value)}
+              type="text"
+              placeholder="Category"
+            />
+          </Form.Group>
 
-              <Form.Group>
-                <Form.Label>Select Category</Form.Label>
-                <select
-                  className="form-control"
-                  value={parentCategoryId}
-                  onChange={(e) => setParentCategoryId(e.target.value)}
-                >
-                  {renderOptions}
-                </select>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" type="submit" onClick={handleSubmitForm}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
+          <Form.Group>
+            <input
+              type="file"
+              name="categoryImage"
+              onChange={handleCategoryImage}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Select Category</Form.Label>
+            <select
+              className="form-control"
+              value={parentCategoryId}
+              onChange={(e) => setParentCategoryId(e.target.value)}
+            >
+              {renderOptions}
+            </select>
+          </Form.Group>
+        </Form>
+      </CustomModal>
     </>
   );
 }

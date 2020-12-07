@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import * as Yup from "yup";
 import { signup } from "../../redux/actions";
-import InputField from "../utils/InputField";
+import InputField from "../UI/InputField";
 
 const initialValues = {
   firstName: "",

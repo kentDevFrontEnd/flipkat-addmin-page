@@ -57,7 +57,7 @@ function NavBar(props) {
   return (
     <>
       <nav
-        className="navbar navbar-expand-lg navbar-dark bg-dark"
+        className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
         style={{ zIndex: 10000 }}
       >
         <Container>

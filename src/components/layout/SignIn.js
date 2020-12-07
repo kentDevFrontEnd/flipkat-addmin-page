@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import * as Yup from "yup";
 import { login } from "../../redux/actions";
-import InputField from "../utils/InputField";
+import InputField from "../UI/InputField";
 
 const initialValues = {
   email: "",

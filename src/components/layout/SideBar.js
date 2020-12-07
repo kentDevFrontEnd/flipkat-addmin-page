@@ -27,7 +27,7 @@ function SideBar(props) {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col sm={10} style={{ marginLeft: "auto" }}>
+            <Col sm={10} style={{ marginLeft: "auto", paddingTop: "56px" }}>
               {props.children}
             </Col>
           </Row>
