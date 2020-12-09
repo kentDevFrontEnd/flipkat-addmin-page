@@ -1,6 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Row,
+  Table,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../../redux/actions/product.action";
 import CustomModal from "../../UI/CustomModal";
@@ -16,8 +24,12 @@ function ProductBody() {
   const [categoryId, setCategoryId] = useState("");
 
   const category = useSelector((state) => state.category);
+  const product = useSelector((state) => state.product);
+
   const dispatch = useDispatch();
   const { categories } = category;
+  const { products } = product;
+  console.log(products);
 
   const handleShow = () => {
     setShow(true);
@@ -78,6 +90,43 @@ function ProductBody() {
 
   // console.log(prodImage);
 
+  const renderProducts = () => {
+    return (
+      <Table responsive striped hover bordered className="mt-3">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products &&
+            products.map((prod, index) => (
+              <tr key={prod._id}>
+                <td>{index}</td>
+                <td>{prod.name}</td>
+                <td>{prod.price}</td>
+                <td>{prod.quantity}</td>
+                <td>{prod.description}</td>
+                <td>{prod.category}</td>
+                <td>
+                  <Button variant="info" className="mr-3">
+                    Edit
+                  </Button>
+                  <Button variant="danger">Delete</Button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
+    );
+  };
+
   return (
     <>
       <Container fluid>
@@ -91,6 +140,8 @@ function ProductBody() {
             </div>
           </Col>
         </Row>
+
+        <Row>{renderProducts()}</Row>
       </Container>
 
       <CustomModal

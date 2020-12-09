@@ -10,7 +10,7 @@ import PrivateRoute from "./components/HOC/PrivateRoute";
 import Default from "./components/layout/Default";
 import SignIn from "./components/layout/SignIn";
 import SignUp from "./components/layout/SignUp";
-import { isUserLogin } from "./redux/actions";
+import { getInitialData, isUserLogin } from "./redux/actions";
 import { getAllCategories } from "./redux/actions/category.action";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
       dispatch(isUserLogin());
     }
 
-    dispatch(getAllCategories());
+    dispatch(getInitialData());
   }, [dispatch, auth]);
   return (
     <React.Fragment>
