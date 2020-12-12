@@ -88,29 +88,16 @@ function CategoryBody() {
 
   console.log(categories);
 
-  return (
-    <>
-      <Container fluid>
-        <Row className="mt-3">
-          <Col sm={12}>
-            <div className="d-flex justify-content-between">
-              <h3>Category</h3>
-              <button className="btn btn-primary" onClick={handleShow}>
-                Add
-              </button>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <ul>{categories.length && renderCate(categories)}</ul>
-        </Row>
-      </Container>
-
+  const renderAddCategoryModal = () => {
+    return (
       <CustomModal
+        size="md"
         show={show}
         handleClose={handleClose}
         handleSubmitForm={handleSubmitForm}
         title="Add Category"
+        btnText="Save"
+        add
       >
         <Form>
           <Form.Group>
@@ -144,6 +131,28 @@ function CategoryBody() {
           </Form.Group>
         </Form>
       </CustomModal>
+    );
+  };
+
+  return (
+    <>
+      <Container fluid>
+        <Row className="mt-3">
+          <Col sm={12}>
+            <div className="d-flex justify-content-between">
+              <h3>Category</h3>
+              <button className="btn btn-primary" onClick={handleShow}>
+                Add
+              </button>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <ul>{categories.length && renderCate(categories)}</ul>
+        </Row>
+      </Container>
+
+      {renderAddCategoryModal()}
     </>
   );
 }

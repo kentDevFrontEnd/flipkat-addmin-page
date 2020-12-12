@@ -14,6 +14,7 @@ import {
 import * as Yup from "yup";
 import { signup } from "../../redux/actions";
 import InputField from "../UI/InputField";
+import Header from "./Header";
 
 const initialValues = {
   firstName: "",
@@ -50,86 +51,89 @@ function SignUp() {
   }
 
   return (
-    <Container className="mt-5">
-      <Row>
-        <Col sm={10} md={6} className="mx-auto">
-          <Card>
-            <CardBody>
-              <h3 className="text-center text-capitalize">Sign up</h3>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={(values, { resetForm }) =>
-                  handleSubmitForm(values, resetForm)
-                }
-              >
-                {(props) => {
-                  return (
-                    <Form>
-                      <Row>
-                        <Col md={6}>
-                          <FastField
-                            name="firstName"
-                            component={InputField}
-                            label="First Name"
-                            type="text"
-                          />
-                        </Col>
+    <>
+      <Header />
+      <Container className="mt-5 pt-5">
+        <Row>
+          <Col sm={10} md={6} className="mx-auto">
+            <Card>
+              <CardBody>
+                <h3 className="text-center text-capitalize">Sign up</h3>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={(values, { resetForm }) =>
+                    handleSubmitForm(values, resetForm)
+                  }
+                >
+                  {(props) => {
+                    return (
+                      <Form>
+                        <Row>
+                          <Col md={6}>
+                            <FastField
+                              name="firstName"
+                              component={InputField}
+                              label="First Name"
+                              type="text"
+                            />
+                          </Col>
 
-                        <Col md={6}>
-                          <FastField
-                            name="lastName"
-                            component={InputField}
-                            label="Last Name"
-                            type="text"
-                          />
-                        </Col>
-                      </Row>
-                      <FastField
-                        name="email"
-                        component={InputField}
-                        label="email"
-                        type="email"
-                      />
+                          <Col md={6}>
+                            <FastField
+                              name="lastName"
+                              component={InputField}
+                              label="Last Name"
+                              type="text"
+                            />
+                          </Col>
+                        </Row>
+                        <FastField
+                          name="email"
+                          component={InputField}
+                          label="email"
+                          type="email"
+                        />
 
-                      <FastField
-                        name="password"
-                        component={InputField}
-                        label="Password"
-                        type="password"
-                      />
+                        <FastField
+                          name="password"
+                          component={InputField}
+                          label="Password"
+                          type="password"
+                        />
 
-                      {/* <FastField
+                        {/* <FastField
                         name="confirmPassword"
                         component={InputField}
                         label="Confirm password"
                         type="password"
                       /> */}
 
-                      <Button
-                        type="submit"
-                        color="primary"
-                        className="text-capitalize"
-                        disabled={loading && true}
-                      >
-                        {loading && (
-                          <Spinner as="span" animation="border" size="sm" />
-                        )}
-                        Sign up
-                      </Button>
-                      <h5 className="mt-3">
-                        If you have an account? Please
-                        <Link to="/signin"> Sign In.</Link>
-                      </h5>
-                    </Form>
-                  );
-                }}
-              </Formik>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+                        <Button
+                          type="submit"
+                          color="primary"
+                          className="text-capitalize"
+                          disabled={loading && true}
+                        >
+                          {loading && (
+                            <Spinner as="span" animation="border" size="sm" />
+                          )}
+                          Sign up
+                        </Button>
+                        <h5 className="mt-3">
+                          If you have an account? Please
+                          <Link to="/signin"> Sign In.</Link>
+                        </h5>
+                      </Form>
+                    );
+                  }}
+                </Formik>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 

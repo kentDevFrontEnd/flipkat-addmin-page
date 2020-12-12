@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../../redux/actions/product.action";
 import CustomModal from "../../UI/CustomModal";
+import "./style.css";
 
 function ProductBody() {
   const [show, setShow] = useState(false);
@@ -22,6 +23,9 @@ function ProductBody() {
   const [description, setDescription] = useState("");
   const [prodImage, setProdImage] = useState([]);
   const [categoryId, setCategoryId] = useState("");
+
+  const [showProdDetail, setShowProdDetail] = useState(false);
+  const [prodDetails, setProdDetails] = useState(null);
 
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
@@ -37,6 +41,16 @@ function ProductBody() {
 
   const handleClose = () => {
     setShow(false);
+  };
+
+  const handleCloseProdDetail = () => {
+    setShowProdDetail(false);
+  };
+
+  const handleShowProdDetail = (prod) => {
+    setShowProdDetail(true);
+    console.log(prod);
+    setProdDetails(prod);
   };
 
   const handleProductImages = (e) => {
@@ -90,6 +104,8 @@ function ProductBody() {
 
   // console.log(prodImage);
 
+  //TODO FIXME show product when add success
+
   const renderProducts = () => {
     return (
       <Table responsive striped hover bordered className="mt-3">
@@ -113,8 +129,15 @@ function ProductBody() {
                 <td>{prod.price}</td>
                 <td>{prod.quantity}</td>
                 <td>{prod.description}</td>
-                <td>{prod.category}</td>
+                <td>{prod.category.name}</td>
                 <td>
+                  <Button
+                    variant="info"
+                    className="mr-3"
+                    onClick={() => handleShowProdDetail(prod)}
+                  >
+                    Details
+                  </Button>
                   <Button variant="info" className="mr-3">
                     Edit
                   </Button>
@@ -127,28 +150,15 @@ function ProductBody() {
     );
   };
 
-  return (
-    <>
-      <Container fluid>
-        <Row className="mt-3">
-          <Col sm={12}>
-            <div className="d-flex justify-content-between">
-              <h3>Products</h3>
-              <button className="btn btn-primary" onClick={handleShow}>
-                Add Product
-              </button>
-            </div>
-          </Col>
-        </Row>
-
-        <Row>{renderProducts()}</Row>
-      </Container>
-
+  const renderAddProductModal = () => {
+    return (
       <CustomModal
         show={show}
         handleClose={handleClose}
         handleSubmitForm={handleSubmitForm}
         title="Add Product"
+        btnText="Save Product"
+        add
       >
         <Form>
           <Form.Group>
@@ -215,6 +225,81 @@ function ProductBody() {
           </Form.Group>
         </Form>
       </CustomModal>
+    );
+  };
+
+  const renderDetailProductModal = () => {
+    if (!prodDetails) return null;
+    return (
+      <CustomModal
+        size="lg"
+        show={showProdDetail}
+        handleClose={handleCloseProdDetail}
+        title="Product Detail"
+        btnText="Back"
+      >
+        <Row>
+          <Col md={6}>
+            <h6>Name</h6>
+            <p className="text-small">{prodDetails.name}</p>
+          </Col>
+          <Col md={6}>
+            <h6>Price</h6>
+            <p className="text-small">{prodDetails.price}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={6}>
+            <h6>Category</h6>
+            <p className="text-small">{prodDetails.category.name}</p>
+          </Col>
+          <Col md={6}>
+            <h6>Quantity</h6>
+            <p className="text-small">{prodDetails.quantity}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12}>
+            <h6>Description</h6>
+            <p className="text-small">{prodDetails.description}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12} className="prod__detail">
+            <h6>Pictures</h6>
+
+            {prodDetails.picture.length &&
+              prodDetails.picture.map((pic) => (
+                <div key={pic._id} className="prod__detail-img">
+                  <img src={`http://localhost:8080/public/${pic.img}`} alt="" />
+                </div>
+              ))}
+          </Col>
+        </Row>
+      </CustomModal>
+    );
+  };
+
+  return (
+    <>
+      <Container fluid>
+        <Row className="mt-3">
+          <Col sm={12}>
+            <div className="d-flex justify-content-between">
+              <h3>Products</h3>
+              <button className="btn btn-primary" onClick={handleShow}>
+                Add Product
+              </button>
+            </div>
+          </Col>
+        </Row>
+
+        <Row>{renderProducts()}</Row>
+      </Container>
+
+      {renderAddProductModal()}
+
+      {renderDetailProductModal()}
     </>
   );
 }
