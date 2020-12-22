@@ -57,7 +57,7 @@ function ProductBody() {
     setProdImage([...prodImage, e.target.files[0]]);
   };
 
-  const handleSubmitForm = () => {
+  const handleAddProduct = () => {
     const form = new FormData();
     form.append("name", prodName);
     form.append("price", price);
@@ -122,6 +122,7 @@ function ProductBody() {
         </thead>
         <tbody>
           {products &&
+            products.length > 0 &&
             products.map((prod, index) => (
               <tr key={prod._id}>
                 <td>{index}</td>
@@ -155,7 +156,7 @@ function ProductBody() {
       <CustomModal
         show={show}
         handleClose={handleClose}
-        handleSubmitForm={handleSubmitForm}
+        handleSubmitForm={handleAddProduct}
         title="Add Product"
         btnText="Save Product"
         add
@@ -220,6 +221,7 @@ function ProductBody() {
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
             >
+              <option value="">Select</option>
               {renderOptions}
             </select>
           </Form.Group>
@@ -234,7 +236,7 @@ function ProductBody() {
       <CustomModal
         size="lg"
         show={showProdDetail}
-        handleClose={handleCloseProdDetail}
+        handleSubmitForm={handleCloseProdDetail}
         title="Product Detail"
         btnText="Back"
       >
