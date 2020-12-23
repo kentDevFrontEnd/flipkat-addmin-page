@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Container, Row } from "reactstrap";
-import { addCategory } from "../../../redux/actions/category.action";
+import {
+  addCategory,
+  updateCategory,
+  getAllCategories,
+} from "../../../redux/actions/category.action";
 import CustomModal from "../../UI/CustomModal";
 import CheckboxTree from "react-checkbox-tree";
 import {
@@ -174,6 +178,29 @@ function CategoryBody() {
 
   const handleEditCategory = () => {
     console.log("edit");
+
+    const form = new FormData();
+
+    expandedArr.length > 0 &&
+      expandedArr.forEach((item) => {
+        form.append("_id", item.value);
+        form.append("name", item.name);
+        form.append("parentId", item.parentId ? item.parentId : "");
+        form.append("type", item.type);
+      });
+
+    checkedArr.length > 0 &&
+      checkedArr.forEach((item) => {
+        form.append("_id", item.value);
+        form.append("name", item.name);
+        form.append("parentId", item.parentId ? item.parentId : "");
+        form.append("type", item.type);
+      });
+
+    dispatch(updateCategory(form)).then((res) => {
+      if (res) dispatch(getAllCategories());
+    });
+
     setShowEdit(false);
   };
 
@@ -187,11 +214,12 @@ function CategoryBody() {
       const updateCheckedArr = checkedArr.map((item, _index) =>
         _index === index ? { ...item, [key]: value } : item
       );
-      setExpandedArr(updateCheckedArr);
+      setCheckedArr(updateCheckedArr);
     }
   };
 
-  console.log(expandedArr);
+  console.log("expanded", expandedArr);
+  console.log("checked", checkedArr);
 
   const renderAddCategoryModal = () => {
     return (
@@ -293,7 +321,12 @@ function CategoryBody() {
                 </Col>
                 <Col>
                   <Form.Group>
-                    <select className="form-control">
+                    <select
+                      className="form-control"
+                      onChange={(e) =>
+                        handleChange("type", e.target.value, index, "expanded")
+                      }
+                    >
                       <option value="">Select Type</option>
                       <option value="store">Store</option>
                       <option value="product">Product</option>
@@ -345,7 +378,12 @@ function CategoryBody() {
                 </Col>
                 <Col>
                   <Form.Group>
-                    <select className="form-control">
+                    <select
+                      className="form-control"
+                      onChange={(e) =>
+                        handleChange("type", e.target.value, index, "checked")
+                      }
+                    >
                       <option value="">Select Type</option>
                       <option value="store">Store</option>
                       <option value="product">Product</option>

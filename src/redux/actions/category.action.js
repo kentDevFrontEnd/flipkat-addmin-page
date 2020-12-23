@@ -51,3 +51,11 @@ export const addCategory = (form) => {
     }
   };
 };
+
+export const updateCategory = (form) => {
+  return async (dispatch) => {
+    console.log(form);
+    const res = await axiosInstance.patch("/category/update", form);
+    console.log(res);
+  };
+};

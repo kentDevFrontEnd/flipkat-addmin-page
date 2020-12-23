@@ -21,7 +21,7 @@ const buildCategories = (parentId, categories, category) => {
         ...cate,
         children:
           cate.children && cate.children.length > 0
-            ? buildCategories(parentId, [...cate.children, category], category)
+            ? [...cate.children, category]
             : [category],
       });
     } else {
