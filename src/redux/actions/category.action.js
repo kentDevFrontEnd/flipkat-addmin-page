@@ -1,4 +1,5 @@
 import axiosInstance from "../../api/axios";
+import qs from "qs";
 import { categoryConst } from "../const";
 
 export const getAllCategories = () => {
@@ -55,7 +56,22 @@ export const addCategory = (form) => {
 export const updateCategory = (form) => {
   return async (dispatch) => {
     console.log(form);
-    const res = await axiosInstance.patch("/category/update", form);
+    const res = await axiosInstance.post("/category/update", form);
     console.log(res);
+    if (res.status === 200) return true;
+  };
+};
+
+export const deleteCategory = (ids) => {
+  return async (dispatch) => {
+    console.log(ids);
+    const res = await axiosInstance.post(
+      "/category/delete",
+      qs.stringify({
+        payload: { ids },
+      })
+    );
+    console.log(res);
+    if (res.status === 200) return true;
   };
 };

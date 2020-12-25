@@ -14,13 +14,26 @@ function CustomModal(props) {
       </Modal.Header>
       <Modal.Body>{props.children}</Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={props.handleSubmitForm}
-        >
-          {props.btnText}
-        </Button>
+        {props.buttons ? (
+          props.buttons.map((btn, index) => (
+            <Button
+              key={index}
+              variant={btn.variant}
+              type="submit"
+              onClick={btn.onClick}
+            >
+              {btn.label}
+            </Button>
+          ))
+        ) : (
+          <Button
+            variant={"primary"}
+            type="submit"
+            onClick={props.handleSubmitForm}
+          >
+            {props.btnText}
+          </Button>
+        )}
       </Modal.Footer>
     </Modal>
   );

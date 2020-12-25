@@ -6,6 +6,7 @@ import {
   addCategory,
   updateCategory,
   getAllCategories,
+  deleteCategory,
 } from "../../../redux/actions/category.action";
 import CustomModal from "../../UI/CustomModal";
 import CheckboxTree from "react-checkbox-tree";
@@ -22,20 +23,29 @@ import {
 } from "react-icons/md";
 
 function CategoryBody() {
+  // for add item
   const [categoryName, setCategoryName] = useState("");
   const [parentCategoryId, setParentCategoryId] = useState("");
   const [categoryImage, setCategoryImage] = useState("");
 
+  // for react checkbox tree
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
 
+  // show add modal
   const [show, setShow] = useState(false);
 
+  // for edit item array
   const [checkedArr, setCheckedArr] = useState([]);
   const [expandedArr, setExpandedArr] = useState([]);
 
+  // show edit modal
   const [showEdit, setShowEdit] = useState(false);
 
+  // show delete confirm modal
+  const [showDel, setShowDel] = useState(false);
+
+  // get category from redux
   const category = useSelector((state) => state.category);
   const dispatch = useDispatch();
 
@@ -75,12 +85,6 @@ function CategoryBody() {
       return options;
     });
     return options;
-  };
-
-  // find name of category by id
-  const findNameById = (id, categories) => {
-    let cate = createCateList(categories).find((item) => item.value === id);
-    return cate.name;
   };
 
   // render for option tag of select
@@ -125,13 +129,12 @@ function CategoryBody() {
     setShow(true);
   };
 
+  // close add modal
   const handleCloseAddModal = () => {
     setShow(false);
   };
 
-  const handleShowEdit = () => {
-    setShowEdit(true);
-
+  const checkedAndExpandedArr = () => {
     const categoryList = createCateList(categories);
     console.log(categoryList);
 
@@ -151,8 +154,26 @@ function CategoryBody() {
     setExpandedArr(tempExpandedArr);
   };
 
+  // open edit modal
+  const handleShowEdit = () => {
+    checkedAndExpandedArr();
+    setShowEdit(true);
+  };
+
+  // close edit modal
   const handleCloseEditModal = () => {
     setShowEdit(false);
+  };
+
+  // open delete confirm modal
+  const handleShowDel = () => {
+    checkedAndExpandedArr();
+    setShowDel(true);
+  };
+
+  // close delete confirm modal
+  const handleCloseDel = () => {
+    setShowDel(false);
   };
 
   // handle add image for category
@@ -161,6 +182,7 @@ function CategoryBody() {
     setCategoryImage(e.target.files[0]);
   };
 
+  // submit add
   const handleAddCategory = () => {
     const form = new FormData();
 
@@ -176,6 +198,7 @@ function CategoryBody() {
     setCategoryImage("");
   };
 
+  // submit edit
   const handleEditCategory = () => {
     console.log("edit");
 
@@ -186,7 +209,7 @@ function CategoryBody() {
         form.append("_id", item.value);
         form.append("name", item.name);
         form.append("parentId", item.parentId ? item.parentId : "");
-        form.append("type", item.type);
+        form.append("type", item.type ? item.type : "store");
       });
 
     checkedArr.length > 0 &&
@@ -194,14 +217,34 @@ function CategoryBody() {
         form.append("_id", item.value);
         form.append("name", item.name);
         form.append("parentId", item.parentId ? item.parentId : "");
-        form.append("type", item.type);
+        form.append("type", item.type ? item.type : "store");
       });
 
     dispatch(updateCategory(form)).then((res) => {
+      console.log("after dispatch");
       if (res) dispatch(getAllCategories());
     });
 
     setShowEdit(false);
+  };
+
+  // submit delete
+
+  const handleDeleteCategory = () => {
+    console.log(123);
+    const ids = [...expanded, ...checked];
+    // console.log(data);
+
+    dispatch(deleteCategory(ids)).then((res) => {
+      if (res) dispatch(getAllCategories());
+    });
+
+    setChecked([]);
+    setExpanded([]);
+    setCheckedArr([]);
+    setExpandedArr([]);
+
+    setShowDel(false);
   };
 
   const handleChange = (key, value, index, type) => {
@@ -218,8 +261,10 @@ function CategoryBody() {
     }
   };
 
-  console.log("expanded", expandedArr);
-  console.log("checked", checkedArr);
+  console.log("expandedArr", expandedArr);
+  console.log("expanded", expanded);
+  console.log("checkedArr", checkedArr);
+  console.log("checked", checked);
 
   const renderAddCategoryModal = () => {
     return (
@@ -258,7 +303,7 @@ function CategoryBody() {
               value={parentCategoryId}
               onChange={(e) => setParentCategoryId(e.target.value)}
             >
-              <option value="">Select Parent Category </option>
+              <option value="">Select Parent Category</option>
               {renderOptions}
             </select>
           </Form.Group>
@@ -398,6 +443,44 @@ function CategoryBody() {
     );
   };
 
+  const renderDeleteConfirmModal = () => {
+    return (
+      <CustomModal
+        size="md"
+        show={showDel}
+        handleClose={handleCloseDel}
+        handleSubmitForm={handleDeleteCategory}
+        title="Are you sure delete items"
+        btnText="Save"
+        buttons={[
+          {
+            label: "No",
+            variant: "info",
+            onClick: handleCloseDel,
+          },
+          {
+            label: "Yes",
+            variant: "danger",
+            onClick: handleDeleteCategory,
+          },
+        ]}
+      >
+        {expandedArr.length > 0 &&
+          expandedArr.map((item, index) => (
+            <Row key={item.value}>
+              <Col>{item.name}</Col>
+            </Row>
+          ))}
+        {checkedArr.length > 0 &&
+          checkedArr.map((item, index) => (
+            <Row key={item.value}>
+              <Col>{item.name}</Col>
+            </Row>
+          ))}
+      </CustomModal>
+    );
+  };
+
   return (
     <>
       <Container fluid>
@@ -427,13 +510,16 @@ function CategoryBody() {
             <Button color="warning" className="mr-3" onClick={handleShowEdit}>
               Edit Category
             </Button>
-            <Button color="danger">Delete Category</Button>
+            <Button color="danger" onClick={handleShowDel}>
+              Delete Category
+            </Button>
           </Col>
         </Row>
       </Container>
 
       {renderAddCategoryModal()}
       {renderEditCategoryModal()}
+      {renderDeleteConfirmModal()}
     </>
   );
 }
