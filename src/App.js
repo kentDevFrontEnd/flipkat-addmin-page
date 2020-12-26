@@ -23,7 +23,7 @@ function App() {
     }
 
     dispatch(getInitialData());
-  }, [dispatch, auth]);
+  }, []);
   return (
     <React.Fragment>
       <Switch>
