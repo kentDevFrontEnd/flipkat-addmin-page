@@ -1,4 +1,5 @@
 import qs from "qs";
+import jwt from "jsonwebtoken";
 import axiosInstance from "../../api/axios";
 import { authConst } from "../const";
 
@@ -44,18 +45,33 @@ export const isUserLogin = () => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (token) {
-      dispatch({
-        type: authConst.LOGIN_SUCCESS,
-        payload: {
-          token,
-          user,
-        },
-      });
+      const data = jwt.decode(token);
+      const nowTime = Date.now() / 1000;
+      console.log(data);
+
+      if (data.exp > nowTime) {
+        dispatch({
+          type: authConst.LOGIN_SUCCESS,
+          payload: {
+            token,
+            user,
+          },
+        });
+      } else {
+        localStorage.clear();
+
+        dispatch({
+          type: authConst.LOGOUT_SUCCESS,
+          payload: {
+            message: "Expired time in",
+          },
+        });
+      }
     } else {
       dispatch({
-        type: authConst.LOGIN_FAIL,
+        type: authConst.LOGOUT_SUCCESS,
         payload: {
-          error: "User login fail",
+          message: "Invalid token",
         },
       });
     }

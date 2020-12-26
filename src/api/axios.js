@@ -13,4 +13,24 @@ const axiosInstance = Axios.create({
   },
 });
 
+axiosInstance.interceptors.request.use(
+  (req) => {
+    return req;
+  },
+  (error) => {
+    console.log(error);
+    return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.request.use(
+  (res) => {
+    return res;
+  },
+  (error) => {
+    console.log(error);
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;

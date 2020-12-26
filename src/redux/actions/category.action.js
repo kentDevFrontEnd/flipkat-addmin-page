@@ -55,23 +55,31 @@ export const addCategory = (form) => {
 
 export const updateCategory = (form) => {
   return async (dispatch) => {
-    console.log(form);
-    const res = await axiosInstance.post("/category/update", form);
-    console.log(res);
-    if (res.status === 200) return true;
+    try {
+      console.log(form);
+      const res = await axiosInstance.post("/category/update", form);
+      console.log(res);
+      if (res.status === 200) return true;
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 };
 
 export const deleteCategory = (ids) => {
   return async (dispatch) => {
-    console.log(ids);
-    const res = await axiosInstance.post(
-      "/category/delete",
-      qs.stringify({
-        payload: { ids },
-      })
-    );
-    console.log(res);
-    if (res.status === 200) return true;
+    try {
+      console.log(ids);
+      const res = await axiosInstance.post(
+        "/category/delete",
+        qs.stringify({
+          payload: { ids },
+        })
+      );
+      console.log(res);
+      if (res.status === 200) return true;
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 };
