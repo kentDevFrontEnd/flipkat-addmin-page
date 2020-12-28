@@ -81,6 +81,7 @@ function CategoryBody() {
         value: cate._id,
         name: cate.name,
         parentId: cate.parentId,
+        type: cate.type,
       });
       cate.children &&
         cate.children.length &&

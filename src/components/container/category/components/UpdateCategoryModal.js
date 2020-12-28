@@ -66,6 +66,7 @@ function UpdateCategoryModal(props) {
                 <Form.Group>
                   <select
                     className="form-control"
+                    value={item.type}
                     onChange={(e) =>
                       handleChange("type", e.target.value, index, "expanded")
                     }
@@ -118,6 +119,7 @@ function UpdateCategoryModal(props) {
                 <Form.Group>
                   <select
                     className="form-control"
+                    value={item.type}
                     onChange={(e) =>
                       handleChange("type", e.target.value, index, "checked")
                     }

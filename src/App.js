@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import Category from "./components/container/category/Category";
 import Home from "./components/container/home/Home";
+import NewPage from "./components/container/NewPage";
 import Order from "./components/container/orders/Order";
 import Products from "./components/container/Products/Products";
 import PrivateRoute from "./components/HOC/PrivateRoute";
@@ -28,6 +29,7 @@ function App() {
     <React.Fragment>
       <Switch>
         <PrivateRoute exact path="/" component={Home} />
+        <PrivateRoute exact path="/new-page" component={NewPage} />
         <PrivateRoute exact path="/products" component={Products} />
         <PrivateRoute exact path="/category" component={Category} />
         <PrivateRoute exact path="/orders" component={Order} />

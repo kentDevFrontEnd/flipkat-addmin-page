@@ -17,6 +17,9 @@ function SideBar(props) {
                   <NavLink to="/">Home</NavLink>
                 </ListGroup.Item>
                 <ListGroup.Item>
+                  <NavLink to="/new-page">New Page</NavLink>
+                </ListGroup.Item>
+                <ListGroup.Item>
                   <NavLink to="/category">Category</NavLink>
                 </ListGroup.Item>
                 <ListGroup.Item>
