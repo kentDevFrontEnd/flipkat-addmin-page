@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CheckboxTree from "react-checkbox-tree";
 import {
   MdAddBox,
@@ -53,6 +53,15 @@ function CategoryBody() {
   const dispatch = useDispatch();
 
   const { categories } = category;
+
+  useEffect(() => {
+    // use for hold modal when sending request
+    if (category.loading) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, [category]);
 
   // create list with name
   const renderCate = (categories) => {

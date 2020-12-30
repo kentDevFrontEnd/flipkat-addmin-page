@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, Row, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import createCategoriesList from "../../../helpers/createCategoriesList";
 import { addNewPage } from "../../../redux/actions";
@@ -18,11 +18,22 @@ function NewPage() {
   const [categories, setCategories] = useState([]);
 
   const category = useSelector((state) => state.category);
+  const page = useSelector((state) => state.page);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setCategories(createCategoriesList(category.categories));
   }, [category]);
+
+  useEffect(() => {
+    if (page.loading) {
+      setShowCreateModal(true);
+    } else {
+      setShowCreateModal(false);
+    }
+  }, [page]);
+
+  console.log(page);
 
   const handleClose = () => {
     setShowCreateModal(false);
@@ -45,6 +56,13 @@ function NewPage() {
     }
 
     dispatch(addNewPage(form));
+
+    setDesc("");
+    setTitle("");
+    setBanners([]);
+    setProducts([]);
+    setCategoryId("");
+    setTypeOfCategory("");
   };
 
   const handleBannersImage = (e) => {
@@ -65,6 +83,7 @@ function NewPage() {
         handleSubmitForm={handleCreate}
         title="Create"
         btnText="Create"
+        loading={page.loading}
       >
         <Form>
           <Row>

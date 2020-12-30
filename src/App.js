@@ -23,8 +23,10 @@ function App() {
       dispatch(isUserLogin());
     }
 
-    dispatch(getInitialData());
-  }, []);
+    if (auth.authenticate) {
+      dispatch(getInitialData());
+    }
+  }, [auth]);
   return (
     <React.Fragment>
       <Switch>

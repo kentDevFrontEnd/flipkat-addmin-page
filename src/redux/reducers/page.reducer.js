@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   page: null,
   success: false,
+  error: null,
 };
 
 const pageReducer = (state = initialState, action) => {
@@ -25,6 +26,7 @@ const pageReducer = (state = initialState, action) => {
         loading: false,
         page: null,
         success: false,
+        error: action.payload.error,
       };
 
     default:

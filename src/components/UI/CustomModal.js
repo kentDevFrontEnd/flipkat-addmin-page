@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Spinner } from "react-bootstrap";
 
 function CustomModal(props) {
   return (
@@ -31,6 +31,15 @@ function CustomModal(props) {
             type="submit"
             onClick={props.handleSubmitForm}
           >
+            {props.loading && (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            )}
             {props.btnText}
           </Button>
         )}

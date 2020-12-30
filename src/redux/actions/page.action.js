@@ -18,11 +18,15 @@ export const addNewPage = (form) => {
       } else {
         dispatch({
           type: pageConst.ADD_PAGE_FAIL,
+          payload: {
+            error: res.error,
+          },
         });
       }
     } catch (error) {
       dispatch({
         type: pageConst.ADD_PAGE_FAIL,
+        payload: { error },
       });
     }
   };
