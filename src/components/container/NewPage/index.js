@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import createCategoriesList from "../../../helpers/createCategoriesList";
+import { addNewPage } from "../../../redux/actions";
 import SideBar from "../../layout/SideBar";
 import CustomModal from "../../UI/CustomModal";
 
@@ -9,6 +10,7 @@ function NewPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [typeOfCategory, setTypeOfCategory] = useState("");
   const [banners, setBanners] = useState([]);
   const [products, setProducts] = useState([]);
 
@@ -16,12 +18,11 @@ function NewPage() {
   const [categories, setCategories] = useState([]);
 
   const category = useSelector((state) => state.category);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setCategories(createCategoriesList(category.categories));
   }, [category]);
-
-  console.log(categories);
 
   const handleClose = () => {
     setShowCreateModal(false);
@@ -29,14 +30,31 @@ function NewPage() {
 
   const handleCreate = () => {
     console.log(123);
+    const form = new FormData();
+
+    form.append("title", title);
+    form.append("description", desc);
+    form.append("category", categoryId);
+    form.append("type", typeOfCategory);
+
+    for (let banner of banners) {
+      form.append("banners", banner);
+    }
+    for (let product of products) {
+      form.append("products", product);
+    }
+
+    dispatch(addNewPage(form));
   };
 
   const handleBannersImage = (e) => {
-    console.log(e.target.files);
+    // console.log(e.target.files);
+    setBanners([...banners, e.target.files[0]]);
   };
 
   const handleProductsImage = (e) => {
-    console.log(e.target.files);
+    // console.log(e.target.files);
+    setProducts([...products, e.target.files[0]]);
   };
 
   const renderCreateModal = () => {
@@ -50,7 +68,7 @@ function NewPage() {
       >
         <Form>
           <Row>
-            <Col>
+            <Col sm={8}>
               <Form.Group>
                 <select
                   className="form-control"
@@ -60,10 +78,25 @@ function NewPage() {
                 >
                   <option value="">Select Category</option>
                   {categories.map((cate, index) => (
-                    <option key={cate.id} value="cate._id">
+                    <option key={cate.value} value={cate.value}>
                       {cate.name}
                     </option>
                   ))}
+                </select>
+              </Form.Group>
+            </Col>
+            <Col sm={4}>
+              <Form.Group>
+                <select
+                  className="form-control"
+                  name=""
+                  value={typeOfCategory}
+                  onChange={(e) => setTypeOfCategory(e.target.value)}
+                >
+                  <option value="">Select Type</option>
+                  <option value="store">Store</option>
+                  <option value="page">Page</option>
+                  <option value="product">Product</option>
                 </select>
               </Form.Group>
             </Col>
@@ -98,6 +131,13 @@ function NewPage() {
           <Row>
             <Col>
               <Form.Group>
+                {banners.length > 0 &&
+                  banners.map((banner, index) => (
+                    <div key={index} className="image__demo">
+                      {banner.name}
+                    </div>
+                  ))}
+
                 <input
                   type="file"
                   className="form-control"
@@ -110,6 +150,12 @@ function NewPage() {
           <Row>
             <Col>
               <Form.Group>
+                {products.length > 0 &&
+                  products.map((banner, index) => (
+                    <div key={index} className="image__demo">
+                      {banner.name}
+                    </div>
+                  ))}
                 <input
                   type="file"
                   className="form-control"
